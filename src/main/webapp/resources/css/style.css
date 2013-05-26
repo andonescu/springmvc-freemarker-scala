@@ -1,0 +1,28 @@
+dl {
+    float: left;
+    clear: both;
+    height: 10px;
+}
+
+dl dt{
+    float: left;
+    width: 200px;
+}
+
+dl dd{
+    float: left;
+}
+
+.fullWidth {
+    width: 600px;
+    margin-bottom: 50px;
+}
+
+br{
+    clear: both;
+}
+
+input {
+
+    float: left;
+}
