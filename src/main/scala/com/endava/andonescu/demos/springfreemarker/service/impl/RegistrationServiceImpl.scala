@@ -14,7 +14,7 @@ import scala.collection.{JavaConverters, JavaConversions}
  *
  */
 @Service
-class RegistationServiceImpl extends RegistrationService {
+class RegistrationServiceImpl extends RegistrationService {
 
   var data: List[RegistrationForm] = List.empty
 

@@ -15,8 +15,9 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfig;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
-import java.util.Properties;
 
 @Configuration
 @EnableWebMvc
@@ -24,31 +25,35 @@ import java.util.Properties;
 public class ConfigMVC extends WebMvcConfigurerAdapter {
 
     @Bean
-    public LocaleResolver LogetLocalResolver() {
+    public LocaleResolver fixedLocalResolverBean() {
         return new FixedLocaleResolver(new Locale("ro"));
     }
 
-    private Properties getFreeMarkerProperties() {
-        Properties properties = new Properties();
-        properties.setProperty("datetime_format", "dd.MM.yyyy");
-        properties.setProperty("number_format", "#");
-        properties.setProperty("whitespace_stripping", "true");
-        properties.setProperty("auto_include", "lib/implicit.ftl");
-        properties.setProperty("default_encoding", "UTF-8");
-        return properties;
+    @Bean
+    public FreeMarkerConfig freemarkerConfigBean() {
+        FreeMarkerConfigurer fConfig = new FreeMarkerConfigurer();
+        fConfig.setConfiguration(freemarkerConfiguration());
+        return fConfig;
+    }
+
+    private freemarker.template.Configuration freemarkerConfiguration() {
+        freemarker.template.Configuration freeMarkerConfig = new freemarker.template.Configuration(
+                freemarker.template.Configuration.VERSION_2_3_21
+        );
+
+        List<String> templates = new ArrayList<String>();
+        templates.add("lib/implicit.ftl");
+
+        freeMarkerConfig.setDateTimeFormat("dd.MM.yyyy");
+        freeMarkerConfig.setNumberFormat("#");
+        freeMarkerConfig.setWhitespaceStripping(true);
+        freeMarkerConfig.setAutoIncludes(templates);
+        freeMarkerConfig.setDefaultEncoding("UTF-8");
+        return freeMarkerConfig;
     }
 
     @Bean
-    public FreeMarkerConfig getFreeMarkerConfig() {
-        FreeMarkerConfigurer freeMarkerConfigurer = new FreeMarkerConfigurer();
-        freeMarkerConfigurer.setFreemarkerSettings(getFreeMarkerProperties());
-        freeMarkerConfigurer.setTemplateLoaderPath("/WEB-INF/freemarker/");
-
-        return freeMarkerConfigurer;
-    }
-
-    @Bean
-    public ViewResolver getViewResolver() {
+    public ViewResolver viewResolverBean() {
         FreeMarkerViewResolver viewResolver = new FreeMarkerViewResolver();
         viewResolver.setCache(true);
         viewResolver.setPrefix("");
@@ -60,7 +65,7 @@ public class ConfigMVC extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public MessageSource messageSource() {
+    public MessageSource messageSourceBean() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:messages/messages");
         messageSource.setCacheSeconds(5);
