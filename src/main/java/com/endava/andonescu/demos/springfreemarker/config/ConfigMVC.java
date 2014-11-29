@@ -41,7 +41,7 @@ public class ConfigMVC extends WebMvcConfigurerAdapter {
                 freemarker.template.Configuration.VERSION_2_3_21
         );
 
-        List<String> templates = new ArrayList<String>();
+        List<String> templates = new ArrayList<>();
         templates.add("lib/implicit.ftl");
 
         freeMarkerConfig.setDateTimeFormat("dd.MM.yyyy");

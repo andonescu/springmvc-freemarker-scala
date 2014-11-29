@@ -30,7 +30,7 @@ public class RegistrationControllerTest extends AbstractTest {
 
         String view = registrationController.showRegistration(new ExtendedModelMap());
 
-        assertEquals("error", view);
+        assertEquals("views/registration", view);
     }
 
 }
